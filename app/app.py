@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from src.titanic_ml_pipeline.model_loader import load_model
+from src.model_loader import load_model
 import pandas as pd
 
 app = Flask(__name__)
