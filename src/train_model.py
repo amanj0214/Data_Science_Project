@@ -10,7 +10,7 @@ from hyperopt import fmin, tpe, hp, STATUS_OK, Trials
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 from pyspark.ml.classification import GBTClassifier
-from models.model_repository import save_model
+import model_repository
 import pandas as pd
 import numpy as np
 from sqlalchemy import text
@@ -80,7 +80,7 @@ def train_sklearn_with_gridsearch(X_train, X_test, y_train, y_test, X, y):
         mlflow.sklearn.log_model(best_model, "best_model_retrained")
         mlflow.log_params(best_params)
         mlflow.log_metric("retrained_on_full_data", True)
-        save_model(best_model, "titanic_rf_model_final")
+        model_repository.save_model(best_model, "titanic_rf_model_final")
     
     return best_model, X_test, y_test
 
@@ -120,7 +120,7 @@ def train_xgboost_with_hyperopt(X_train, X_test, y_train, y_test, X, y):
         mlflow.xgboost.log_model(best_model, "best_xgboost_model_retrained")
         mlflow.log_params(best_params)
         mlflow.log_metric("retrained_on_full_data", True)
-        save_model(best_model, "titanic_best_xgboost_model_final")
+        model_repository.save_model(best_model, "titanic_best_xgboost_model_final")
     
     return best_model, X_test, y_test
 

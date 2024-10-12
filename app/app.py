@@ -1,11 +1,11 @@
 from flask import Flask, request, render_template, jsonify
-from src.model_loader import load_model
+import src.model_repository as model_repository
 import pandas as pd
 
 app = Flask(__name__)
 
 # Load model using the abstracted load_model function
-model = load_model("titanic_survival_model")
+model = model_repository.load_model("titanic_survival_model")
 
 @app.route('/')
 def home():
