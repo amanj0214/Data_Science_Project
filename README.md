@@ -9,7 +9,7 @@ If you are working in a virtual environment and have installed packages using pi
 ```
 python -m venv venv
 ```
-3. Activate your virtual environment: If you are using a virtual environment (recommended), activate it first. For example:
+2. Activate your virtual environment: If you are using a virtual environment (recommended), activate it first. For example:
 ```
 # On Windows
 .\venv\Scripts\activate
