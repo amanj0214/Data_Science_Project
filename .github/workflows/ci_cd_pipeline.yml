@@ -25,4 +25,4 @@ jobs:
       - name: Train the model
         run: |
           cd src
-          python src/train_model.py
+          python train_model.py
