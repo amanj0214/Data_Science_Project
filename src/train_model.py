@@ -60,11 +60,11 @@ def train_sklearn_with_gridsearch(X_train, X_test, y_train, y_test, X, y):
     print(f"Best Model Params: {best_params}")
     print(f"Best Cross-Validation Score: {best_score}")
 
-    # Retrain the best model on the full data
-    best_model.fit(X, y)
-
     # Evaluate the model on the test set
     evaluate_model(best_model, X_test, y_test)
+
+    # Retrain the best model on the full data
+    best_model.fit(X, y)
 
     return best_model
 

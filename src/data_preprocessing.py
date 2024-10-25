@@ -25,6 +25,8 @@ def preprocess_data(data, fit_scaler=True, scaler=None):
         # Use the provided scaler for inference
         X_scaled = scaler.transform(X)
 
+    X_scaled = pd.DataFrame(X_scaled, columns=scaler.get_feature_names_out())
+
     return X_scaled, y, scaler  # Ensure returning scaler, even if not fitted
 
 def save_processed_data(data):
