@@ -26,3 +26,11 @@ jobs:
         run: |
           cd src
           python train_model.py
+
+      - name: Evaluate Model
+        run: |
+          python evaluate_model.py
+
+      - name: Batch Prediction
+        run: |
+          python batch_prediction.py

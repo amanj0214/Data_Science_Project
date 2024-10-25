@@ -1,7 +1,6 @@
 import pandas as pd
 import joblib
-from data_preprocessing import preprocess_data  # Reuse your existing preprocessing
-from sklearn.model_selection import train_test_split
+from data_preprocessing import preprocess_data, load_data  # Reuse your existing preprocessing
 
 
 def load_model():
@@ -52,13 +51,13 @@ if __name__ == '__main__':
     model = load_model()
 
     # Load new data for predictions
-    new_data = load_new_data("./../data/new/new_data.csv")
+    new_data = load_data()
 
     # Apply the preprocessing pipeline
     preprocessed_data = preprocess_data(new_data)
 
     # Make batch predictions
-    predictions = make_batch_predictions(model, preprocessed_data)
+    predictions = make_batch_predictions(model, preprocessed_data[0])
 
     # Save predictions to a file
     save_predictions(predictions, './../data/predictions/batch_predictions.csv')
