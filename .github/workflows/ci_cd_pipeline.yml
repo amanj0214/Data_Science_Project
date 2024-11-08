@@ -6,29 +6,27 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  train:
+  train-model:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10'
+          python-version: '3.8'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Train the model
-        run: |
-          cd src
-          python train_model.py
-          python evaluate_model.py
+      - name: Train model with cross-validation
+        run: python train_model.py
 
-      - name: Batch Prediction
-        run: |
-          cd src
-          python batch_prediction.py
+      - name: Train final model
+        run: python train_final_model.py
+
+      - name: Predict for next month
+        run: python predict.py
