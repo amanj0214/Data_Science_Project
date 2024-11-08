@@ -1,36 +1,71 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titanic Survival Prediction</title>
+    <title>Return Rate Prediction</title>
 </head>
 <body>
-    <h2>Titanic Survival Prediction</h2>
-    <form action="/predict" method="POST">
-        <label for="Pclass">Passenger Class:</label>
-        <input type="text" id="Pclass" name="Pclass"><br>
+    <h1>Predict Return Rate for Next Month</h1>
 
-        <label for="Sex">Sex:</label>
-        <input type="text" id="Sex" name="Sex"><br>
+    <!-- Button to get next month's prediction -->
+    <button onclick="predictNextMonth()">Get Prediction for Next Month</button>
+    <div id="next-month-results"></div>
 
-        <label for="Age">Age:</label>
-        <input type="text" id="Age" name="Age"><br>
+    <h2>Or Enter Details to Predict</h2>
+    <form id="predict-form">
+        <label for="ca_state">State:</label>
+        <input type="text" id="ca_state" name="ca_state" required><br>
 
-        <label for="Fare">Fare:</label>
-        <input type="text" id="Fare" name="Fare"><br>
+        <label for="i_class">Item Class:</label>
+        <input type="text" id="i_class" name="i_class" required><br>
 
-        <label for="SibSp">Siblings/Spouses:</label>
-        <input type="text" id="SibSp" name="SibSp"><br>
+        <label for="i_category">Item Category:</label>
+        <input type="text" id="i_category" name="i_category" required><br>
 
-        <label for="Parch">Parents/Children:</label>
-        <input type="text" id="Parch" name="Parch"><br>
+        <label for="d_year">Year:</label>
+        <input type="number" id="d_year" name="d_year" required><br>
 
-        <input type="submit" value="Predict">
+        <label for="d_moy">Month:</label>
+        <input type="number" id="d_moy" name="d_moy" required><br>
+
+        <label for="lag_1_return_rate">Lagged Return Rate:</label>
+        <input type="number" id="lag_1_return_rate" name="lag_1_return_rate" step="0.01" required><br>
+
+        <button type="button" onclick="submitPrediction()">Predict</button>
     </form>
 
-    {% if prediction_text %}
-        <h3>{{ prediction_text }}</h3>
-    {% endif %}
+    <div id="prediction-result"></div>
+
+    <script>
+        async function predictNextMonth() {
+            const response = await fetch('/predict_next_month');
+            const result = await response.json();
+            document.getElementById('next-month-results').innerText = JSON.stringify(result, null, 2);
+        }
+
+        async function submitPrediction() {
+            const formData = {
+                ca_state: document.getElementById('ca_state').value,
+                i_class: document.getElementById('i_class').value,
+                i_category: document.getElementById('i_category').value,
+                d_year: Number(document.getElementById('d_year').value),
+                d_moy: Number(document.getElementById('d_moy').value),
+                lag_1_return_rate: parseFloat(document.getElementById('lag_1_return_rate').value)
+            };
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            document.getElementById('prediction-result').innerText = 'Predicted Return Rate: ' + result.predicted_return_rate;
+        }
+    </script>
 </body>
 </html>
