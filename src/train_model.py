@@ -9,7 +9,7 @@ import mlflow
 import joblib
 from load_data import load_data
 from data_processing import process_data
-
+import config
 
 def main():
     # Load and preprocess data
@@ -30,7 +30,7 @@ def main():
     categorical_cols = ['ca_state', 'i_class', 'i_category']
     numeric_cols = ['lag_1_return_rate']
     preprocessor = ColumnTransformer([
-        ("categorical", OneHotEncoder(drop='first'), categorical_cols),
+        ("categorical", OneHotEncoder(drop='first', handle_unknown='infrequent_if_exist'), categorical_cols),
         ("numerical", StandardScaler(), numeric_cols)
     ])
 
@@ -64,8 +64,8 @@ def main():
         mlflow.log_params(best_params)
         
         # Save the best parameters and preprocessor pipeline
-        joblib.dump(best_params, "models/best_params.pkl")
-        joblib.dump(preprocessor, "models/preprocessor.pkl")
+        joblib.dump(best_params, config.BEST_PARAMS_FILE)
+        joblib.dump(preprocessor, config.PREPROCESSOR_OBJ_FILE)
         print("Best parameters and preprocessor saved:", best_params)
 
         # Log metrics
