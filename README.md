@@ -3,7 +3,7 @@
 A Sample Data Science Project for understanding the structure
 
 
-
+New
 ### Generating `requirements.txt`
 If you are working in a virtual environment and have installed packages using pip, you can easily generate a requirements.txt file that includes all installed packages with their versions. Here’s how to do it:
 1. Create `venv`
