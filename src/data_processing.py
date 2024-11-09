@@ -6,7 +6,7 @@ def process_data(data):
     data = data.sort_values(['d_year', 'd_moy']).groupby(
         ['ca_state', 'i_class', 'i_category']
     ).shift(1).add_prefix('lag_1_')
-    data.dropna(inplace=True)
+    data = data.dropna()
     return data
 
 if __name__ == "__main__":

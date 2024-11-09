@@ -1,7 +1,9 @@
 import pandas as pd
 import sqlite3
+import config
 
-def load_data(data_path):
+
+def load_data(data_path=config.SQL_LITE_FILE_NAME):
     conn = sqlite3.connect(data_path)
     query = """
     SELECT 
@@ -19,15 +21,17 @@ def load_data(data_path):
     JOIN web_returns wr ON wr.wr_order_number = ws.ws_order_number 
     JOIN customer_address ca ON wr.wr_returning_addr_sk = ca.ca_address_sk 
     WHERE d_year IS NOT NULL AND d_moy IS NOT NULL 
-      AND i_class != 'None' AND i_category != 'None' 
+      AND i_class != 'None' AND i_category != 'None'
+      -- TODO remove below filters
+      AND ca_state = 'CA'
     GROUP BY d_year, d_moy, ca_state, i_class, i_category
     HAVING SUM(wr_net_loss) > AVG(wr_net_loss)
     """
-    data = pd.read_sql(query, conn)
+    data_raw = pd.read_sql(query, conn)
     conn.close()
-    return data
+    return data_raw
+
 
 if __name__ == "__main__":
-    sqlite_db_path = "data/tpcds.db"
-    data = load_data(sqlite_db_path)
+    data = load_data()
     print(data.head())

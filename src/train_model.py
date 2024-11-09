@@ -7,16 +7,20 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import mean_squared_error, make_scorer
 import mlflow
 import joblib
+from load_data import load_data
+from data_processing import process_data
 
-from utils.data_processing import load_data, preprocess_data
 
 def main():
     # Load and preprocess data
-    data = load_data("data/tpcds.db")
-    processed_data = preprocess_data(data)
+    data = load_data()
+    processed_data = process_data(data)
 
-    # Define features and target
-    X = processed_data.drop(columns=['return_rate'])
+    model_columns = ['d_year', 'd_moy', 'ca_state', 'i_class', 'i_category',
+                     'return_rate', 'lag_1_return_rate']
+
+    # Define Features and Target
+    X = processed_data[model_columns].drop(columns=['return_rate'])
     y = processed_data['return_rate']
 
     # Cross-validation strategy
@@ -69,6 +73,7 @@ def main():
         mse = mean_squared_error(y, best_model.predict(X))
         mlflow.log_metric("MSE", mse)
         print("Cross-validation MSE:", mse)
+
 
 if __name__ == "__main__":
     main()

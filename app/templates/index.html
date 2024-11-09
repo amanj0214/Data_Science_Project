@@ -5,44 +5,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Return Rate Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+        }
+        label {
+            display: block;
+        }
+        button {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Predict Return Rate for Next Month</h1>
 
-    <!-- Button to get next month's prediction -->
-    <button onclick="predictNextMonth()">Get Prediction for Next Month</button>
-    <div id="next-month-results"></div>
-
-    <h2>Or Enter Details to Predict</h2>
+    <h2>Enter Details to Predict</h2>
     <form id="predict-form">
-        <label for="ca_state">State:</label>
-        <input type="text" id="ca_state" name="ca_state" required><br>
+        <table>
+            <tr>
+                <td><label for="ca_state">State:</label></td>
+                <td>
+                    <select id="ca_state" name="ca_state" required onchange="updateLaggedReturnRate()">
+                        <option value="">Select State</option>
+                        {% for state in states %}
+                            <option value="{{ state }}">{{ state }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="i_class">Item Class:</label></td>
+                <td>
+                    <select id="i_class" name="i_class" required>
+                        <option value="">Select Item Class</option>
+                        {% for item_class in item_classes %}
+                            <option value="{{ item_class }}">{{ item_class }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="i_category">Item Category:</label></td>
+                <td>
+                    <select id="i_category" name="i_category" required>
+                        <option value="">Select Category</option>
+                        {% for item_category in item_categories %}
+                            <option value="{{ item_category }}">{{ item_category }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="d_year">Year:</label></td>
+                <td><input type="number" id="d_year" name="d_year" required></td>
+            </tr>
+            <tr>
+                <td><label for="d_moy">Month:</label></td>
+                <td><input type="number" id="d_moy" name="d_moy" required></td>
+            </tr>
+            <tr>
+                <td><label for="lag_1_return_rate">Lagged Return Rate:</label></td>
+                <td><input type="number" id="lag_1_return_rate" name="lag_1_return_rate" step="0.01" required readonly></td>
+            </tr>
+        </table>
 
-        <label for="i_class">Item Class:</label>
-        <input type="text" id="i_class" name="i_class" required><br>
-
-        <label for="i_category">Item Category:</label>
-        <input type="text" id="i_category" name="i_category" required><br>
-
-        <label for="d_year">Year:</label>
-        <input type="number" id="d_year" name="d_year" required><br>
-
-        <label for="d_moy">Month:</label>
-        <input type="number" id="d_moy" name="d_moy" required><br>
-
-        <label for="lag_1_return_rate">Lagged Return Rate:</label>
-        <input type="number" id="lag_1_return_rate" name="lag_1_return_rate" step="0.01" required><br>
-
-        <button type="button" onclick="submitPrediction()">Predict</button>
+        <button type="button" onclick="submitPrediction()">Predict Next Month</button>
     </form>
 
     <div id="prediction-result"></div>
 
     <script>
-        async function predictNextMonth() {
-            const response = await fetch('/predict_next_month');
-            const result = await response.json();
-            document.getElementById('next-month-results').innerText = JSON.stringify(result, null, 2);
+        async function updateLaggedReturnRate() {
+            const state = document.getElementById('ca_state').value;
+            if (state) {
+                const response = await fetch('/get_lagged_return_rate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ state: state })
+                });
+                const data = await response.json();
+                document.getElementById('lag_1_return_rate').value = data.lagged_return_rate;
+            } else {
+                document.getElementById('lag_1_return_rate').value = '';
+            }
         }
 
         async function submitPrediction() {
