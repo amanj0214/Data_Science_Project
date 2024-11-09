@@ -1,14 +1,13 @@
 from flask import Flask, request, render_template, jsonify
 # import src.model_repository as model_repository
 import pandas as pd
+import src.predict as predict
+import src.db_utils as db_utils
 
 app = Flask(__name__)
 
-# Load model using the abstracted load_model function
-# model = model_repository.load_model("titanic_survival_model")
-
 # Example lists for dropdown options
-states = ["CA", "NY", "TX"]
+states = db_utils.get_all_states()
 item_classes = ["Electronics", "Furniture", "Clothing"]
 item_categories = ["A", "B", "C"]
 
@@ -34,18 +33,10 @@ def get_lagged_return_rate():
 
 
 @app.route('/predict', methods=['POST'])
-def predict():
-    return jsonify({"predicted_return_rate": 45})
-    # Assume that form data contains the input features in JSON
+def predict_return_rate():
     data = request.get_json(force=True)
-    return jsonify({"predicted_return_rate": 45})
-    df = pd.DataFrame([data])
-    
-    # Make predictions using the loaded model
-    prediction = model.predict(df)
-    
-    # Send the prediction result back to the client
-    return jsonify({"predicted_return_rate": int(prediction[0])})
+    prediction_return_rate = predict.predict(pd.DataFrame([data]))
+    return jsonify({"predicted_return_rate": float(prediction_return_rate[0])})
 
 
 if __name__ == '__main__':

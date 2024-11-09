@@ -66,20 +66,20 @@
                 </td>
             </tr>
             <tr>
+                <td><label for="lag_1_return_rate">Lagged Return Rate:</label></td>
+                <td><input type="number" id="lag_1_return_rate" name="lag_1_return_rate" step="0.01" required></td>
+            </tr>
+            <tr>
                 <td><label for="d_year">Year:</label></td>
-                <td><input type="number" id="d_year" name="d_year" required></td>
+                <td><input type="number" id="d_year" name="d_year" value="2024" required></td>
             </tr>
             <tr>
                 <td><label for="d_moy">Month:</label></td>
-                <td><input type="number" id="d_moy" name="d_moy" required></td>
-            </tr>
-            <tr>
-                <td><label for="lag_1_return_rate">Lagged Return Rate:</label></td>
-                <td><input type="number" id="lag_1_return_rate" name="lag_1_return_rate" step="0.01" required readonly></td>
+                <td><input type="number" id="d_moy" name="d_moy" value="12" required></td>
             </tr>
         </table>
 
-        <button type="button" onclick="submitPrediction()">Predict Next Month</button>
+        <button type="button" onclick="submitPrediction()">Predict For Month</button>
     </form>
 
     <div id="prediction-result"></div>

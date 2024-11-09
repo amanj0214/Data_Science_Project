@@ -11,6 +11,7 @@ from load_data import load_data
 from data_processing import process_data
 import config
 
+
 def main():
     # Load and preprocess data
     data = load_data()
@@ -55,6 +56,7 @@ def main():
         scoring=make_scorer(mean_squared_error, greater_is_better=False)
     )
 
+    mlflow.set_experiment("TPC-DS Return Rate Prediction")
     with mlflow.start_run():
         # Run grid search
         grid_search.fit(X, y)
