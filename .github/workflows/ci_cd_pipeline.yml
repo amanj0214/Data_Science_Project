@@ -17,13 +17,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Set PYTHONPATH to include src
-        run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src" >> $GITHUB_ENV
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Change directory to src
+        run: cd src
 
       - name: Train model with cross-validation
         run: python train_model.py
