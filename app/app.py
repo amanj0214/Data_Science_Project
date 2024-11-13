@@ -1,15 +1,16 @@
+import setup_src_path
+
 from flask import Flask, request, render_template, jsonify
-# import src.model_repository as model_repository
 import pandas as pd
-import src.predict as predict
-import src.db_utils as db_utils
+import predict
+import db_utils
 
 app = Flask(__name__)
 
 # Example lists for dropdown options
 states = db_utils.get_all_states()
-item_classes = ["Electronics", "Furniture", "Clothing"]
-item_categories = ["A", "B", "C"]
+item_classes = db_utils.get_all_item_class()
+item_categories = db_utils.get_all_item_categories()
 
 @app.route('/')
 def index():

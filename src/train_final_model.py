@@ -7,6 +7,7 @@ from load_data import load_data
 from data_processing import process_data
 import config
 
+
 def main():
     # Load and preprocess data
     data = load_data()

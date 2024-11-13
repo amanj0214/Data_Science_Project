@@ -25,7 +25,6 @@ jobs:
       - name: Train model with cross-validation
         run: |
           cd src
-          ls
           python train_model.py
 
       - name: Train final model

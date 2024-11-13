@@ -19,7 +19,7 @@ source venv/bin/activate
 ```
 3. Generate the requirements.txt file: Use the following command:
 ```
-pip freeze > requirements.txt
+python generate_requirements.py
 ```
 
 pip install -r requirements.txt
