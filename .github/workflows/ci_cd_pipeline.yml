@@ -22,14 +22,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Change directory to src
-        run: cd src
-
       - name: Train model with cross-validation
-        run: python train_model.py
+        run: |
+          cd src
+          ls
+          python train_model.py
 
       - name: Train final model
-        run: python train_final_model.py
+        run: |
+          cd src
+          python train_final_model.py
 
       - name: Predict for next month
-        run: python predict.py
+        run: |
+          cd src
+          python predict.py
