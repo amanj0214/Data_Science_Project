@@ -1,4 +1,3 @@
-Here’s the full test with at least 40 questions as requested:
 
 Section 1: Python Basics (Datatypes, Strings, Lists, Sets, Dictionaries)
 
@@ -123,10 +122,3 @@ Section 3: Miscellaneous Questions (Bonus)
 4. Short Answer Questions
 36. What are the four main types of analytics? Provide a brief description of each.
 37. Explain the difference between discrete and continuous data with examples.
-
-5. Coding Exercise
-38. Write a Python program to create a scatter plot with random data using matplotlib.
-	39.	Write a Python function to calculate the frequency distribution of values in a dataset.
-	40.	Write a Python program to find the unique elements in a list using a set.
-
-Let me know if you’d like solutions or explanations for any of these!
