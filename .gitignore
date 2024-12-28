@@ -1,2 +1,6 @@
 /data/
 /models/
+.idea*
+*checkpoint*
+*.pyc
+*/mlruns/
